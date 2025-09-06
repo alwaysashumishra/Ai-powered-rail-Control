@@ -37,10 +37,13 @@ export default function Sidebar({ activeSection, setActiveSection }) {
       </button>
 
       {/* Sidebar */}
-      <aside
-        className={`fixed md:static top-0 left-0 h-full w-64 bg-white shadow-xl flex flex-col rounded-r-2xl overflow-hidden transform transition-transform duration-300 z-40
-        ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
-      >
+     <aside
+  className={`fixed md:static top-0 left-0 h-screen w-64 bg-white shadow-xl 
+              flex flex-col rounded-r-2xl overflow-y-auto 
+              transform transition-transform duration-300 z-40
+              ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+>
+
         {/* Header with Logo */}
         <div className="flex items-center gap-3 p-5 bg-gradient-to-r from-blue-400 to-sky-300 shadow-md">
           <img

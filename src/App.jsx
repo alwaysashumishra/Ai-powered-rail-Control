@@ -7,10 +7,11 @@ import Resource from "./components/Resource";
 import Reports from "./components/Reports";
 import Settings from "./components/Settings";
 import Station from "./components/Station";
-
+import Login from "./components/Login";   // 👈 Login component add kiya
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("Dashboard");
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 👈 login track karne ke liye
 
   const renderSection = () => {
     switch (activeSection) {
@@ -32,6 +33,11 @@ export default function App() {
         return <Dashboard />;
     }
   };
+
+  // 👇 Agar login nahi hai to Login page dikhao
+  if (!isLoggedIn) {
+    return <Login setIsLoggedIn={setIsLoggedIn} />;
+  }
 
   return (
     <div className="flex">
