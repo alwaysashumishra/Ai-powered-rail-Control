@@ -104,9 +104,6 @@ function trackInfoForPath(section, ids) {
 
 // ----------------------------- Map Component --------------------------------
 function SvgMap({ section, highlightIds }) {
-  const width = 700;
-  const height = 520;
-
   const lines = section.links.map((l, idx) => {
     const A = findStation(section, l.a);
     const B = findStation(section, l.b);
@@ -137,9 +134,7 @@ function SvgMap({ section, highlightIds }) {
   return (
     <svg
       viewBox="0 0 700 520"
-      width={width}
-      height={height}
-      className="rounded-2xl bg-zinc-800/60 ring-1 ring-white/5"
+      className="w-full h-auto max-w-full rounded-2xl bg-zinc-800/60 ring-1 ring-white/5"
     >
       <path
         d="M100,100 C140,60 220,80 260,120 C300,160 320,140 360,160 C420,190 460,260 520,280 C560,300 600,340 610,370"
@@ -162,7 +157,11 @@ function SvgMap({ section, highlightIds }) {
       {section.stations.map((s) => (
         <g key={s.id}>
           <circle cx={s.x} cy={s.y} r={6} className="fill-zinc-200" />
-          <text x={s.x + 8} y={s.y + 4} className="text-[10px] fill-zinc-300 select-none">
+          <text
+            x={s.x + 8}
+            y={s.y + 4}
+            className="hidden sm:block text-[10px] fill-zinc-300 select-none"
+          >
             {s.name}
           </text>
         </g>
@@ -189,16 +188,19 @@ export default function RailDashboard() {
 
   return (
     <div className="min-h-screen bg-zinc-800 text-zinc-100">
-      <div className="border-b border-white/5 px-8 py-5 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold tracking-tight">Region Selection</h1>
+      {/* Header */}
+      <div className="border-b border-white/5 px-4 md:px-8 py-4 flex items-center justify-between">
+        <h1 className="text-lg md:text-2xl font-semibold tracking-tight">Region Selection</h1>
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-full bg-zinc-800 grid place-items-center">JD</div>
           <span className="text-sm text-zinc-300">John Doe</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-12 gap-6 p-8">
-        <aside className="col-span-3 bg-zinc-900/50 rounded-2xl p-5 ring-1 ring-white/5">
+      {/* Content */}
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 p-4 md:p-8">
+        {/* Left Sidebar */}
+        <aside className="md:col-span-3 bg-zinc-900/50 rounded-2xl p-5 ring-1 ring-white/5">
           <h2 className="text-lg font-medium mb-4">Select Region</h2>
 
           <Label>Zone</Label>
@@ -240,11 +242,13 @@ export default function RailDashboard() {
           </Select>
         </aside>
 
-        <main className="col-span-6 flex items-center justify-center">
+        {/* Map */}
+        <main className="md:col-span-6 flex items-center justify-center order-first md:order-none">
           <SvgMap section={section} highlightIds={pathIds} />
         </main>
 
-        <aside className="col-span-3">
+        {/* Right Sidebar */}
+        <aside className="md:col-span-3">
           <div className="bg-zinc-900/50 rounded-2xl p-6 ring-1 ring-white/5">
             <h2 className="text-lg font-medium mb-4">Section Overview</h2>
             <div className="space-y-3">

@@ -62,7 +62,7 @@ export default function Login({ setIsLoggedIn }) {
       )
       .then(
         () => {
-          alert("OTP aapke email par bheja gaya hai ✅");
+          alert("Otp send successfully!");
           setStep("otp");
         },
         (error) => {
@@ -77,7 +77,7 @@ export default function Login({ setIsLoggedIn }) {
       alert(`Login successful as ${role} 🎉`);
       setIsLoggedIn(true);
     } else {
-      alert("Galat OTP ❌");
+      alert("Wrong Otp ❌");
     }
   };
 
