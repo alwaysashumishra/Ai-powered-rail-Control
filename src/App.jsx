@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard"; 
-import TrainScheduling from "./components/TrainScheduling";
+import TrainScheduling from "./components/Trainscheduling";
 import Routing from "./components/Routing";
 import Reports from "./components/Reports";
 import Settings from "./components/Settings";
