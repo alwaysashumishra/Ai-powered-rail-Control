@@ -3,10 +3,10 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard"; 
 import TrainScheduling from "./components/TrainScheduling";
 import Routing from "./components/Routing";
-import Resource from "./components/Resource";
 import Reports from "./components/Reports";
 import Settings from "./components/Settings";
 import Station from "./components/Station";
+import TrainJourney from "./components/TrainJourney";
 import Login from "./components/Login";   // 👈 Login component add kiya
 
 export default function App() {
@@ -21,8 +21,8 @@ export default function App() {
         return <TrainScheduling />;
       case "Routing Optimization":
         return <Routing />;
-      case "Resource Utilization":
-        return <Resource />;
+      case "TrainJourney":
+        return <TrainJourney/>;
       case "Reports & Analytics":
         return <Reports />;
       case "Settings":

@@ -1,5 +1,5 @@
 import React from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, Polyline, Marker, Tooltip, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -11,35 +11,57 @@ const trainIcon = new L.Icon({
   popupAnchor: [0, -32],
 });
 
-export default function TrainMap() {
-  const trains = [
-    { id: "G123", type: "Express", lat: 28.6139, lon: 77.2090, route: "Delhi → Bhopal" },
-    { id: "P456", type: "Passenger", lat: 19.0760, lon: 72.8777, route: "Mumbai → Pune" },
-    { id: "F789", type: "Freight", lat: 17.3850, lon: 78.4867, route: "Vijayawada → Hyderabad" },
-  ];
+// Station coordinates
+const stationsCoords = {
+  "Delhi": [28.6139, 77.2090],
+  "Bhopal": [23.2599, 77.4126],
+  "Mumbai": [19.0760, 72.8777],
+  "Pune": [18.5204, 73.8567],
+  "Vijayawada": [16.5062, 80.6480],
+  "Hyderabad": [17.3850, 78.4867],
+};
+
+// Sample trains
+const trains = [
+  { id: "G123", type: "Express", station: "Delhi" },
+  { id: "P456", type: "Passenger", station: "Mumbai" },
+  { id: "F789", type: "Freight", station: "Vijayawada" },
+];
+
+export default function TrainMap({ startStation, endStation }) {
+  const routeLine =
+    startStation && endStation
+      ? [stationsCoords[startStation], stationsCoords[endStation]]
+      : [];
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full" style={{ minHeight: "100%" }}>
       <MapContainer
         center={[22.9734, 78.6569]}
         zoom={5}
-        className="w-full h-full rounded-lg"
+        style={{ width: "100%", height: "100%" }}
       >
+        {/* Optional TileLayer for minimal style */}
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="&copy; OpenStreetMap contributors"
         />
+
+        {/* Draw selected route */}
+        {routeLine.length === 2 && (
+          <Polyline positions={routeLine} color="blue" weight={4} />
+        )}
+
+        {/* Train markers */}
         {trains.map((train) => (
           <Marker
             key={train.id}
-            position={[train.lat, train.lon]}
+            position={stationsCoords[train.station]}
             icon={trainIcon}
           >
-            <Popup>
-              <b>{train.id} ({train.type})</b>
-              <br />
-              Route: {train.route}
-            </Popup>
+            <Tooltip direction="top" offset={[0, -10]} opacity={1} permanent>
+              {train.id} ({train.type})
+            </Tooltip>
           </Marker>
         ))}
       </MapContainer>

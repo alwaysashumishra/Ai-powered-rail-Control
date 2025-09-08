@@ -3,6 +3,7 @@ import emailjs from "@emailjs/browser";
 import logo from "../assets/rail-logo.png"; 
 
 export default function Login({ setIsLoggedIn }) {
+  const [role, setRole] = useState(""); // role select
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [generatedOtp, setGeneratedOtp] = useState(null);
@@ -21,26 +22,18 @@ export default function Login({ setIsLoggedIn }) {
     }
     setCaptcha(text);
 
-    // reset input
     setCaptchaInput("");
+    if (captchaTimerRef.current) clearTimeout(captchaTimerRef.current);
 
-    // clear old timer
-    if (captchaTimerRef.current) {
-      clearTimeout(captchaTimerRef.current);
-    }
-
-    // new timer: auto refresh after 1 minute
     captchaTimerRef.current = setTimeout(() => {
       generateCaptcha();
-    }, 60000); // 60 seconds
+    }, 60000); // auto refresh 1 min
   };
 
   useEffect(() => {
     generateCaptcha();
     return () => {
-      if (captchaTimerRef.current) {
-        clearTimeout(captchaTimerRef.current);
-      }
+      if (captchaTimerRef.current) clearTimeout(captchaTimerRef.current);
     };
   }, []);
 
@@ -62,10 +55,10 @@ export default function Login({ setIsLoggedIn }) {
 
     emailjs
       .send(
-         "service_612cj6r",   // <-- replace with EmailJS service ID
-        "template_ce6qkvm",  // <-- replace with template ID
+        "service_612cj6r", // replace with EmailJS service ID
+        "template_ce6qkvm", // replace with template ID
         templateParams,
-        "hbmfDbK0he23pGzaL" 
+        "hbmfDbK0he23pGzaL" // replace with public key
       )
       .then(
         () => {
@@ -81,7 +74,7 @@ export default function Login({ setIsLoggedIn }) {
   // Verify OTP
   const verifyOtp = () => {
     if (otp === generatedOtp) {
-      alert("Login successful 🎉");
+      alert(`Login successful as ${role} 🎉`);
       setIsLoggedIn(true);
     } else {
       alert("Galat OTP ❌");
@@ -90,7 +83,7 @@ export default function Login({ setIsLoggedIn }) {
 
   return (
     <div className="flex justify-center items-center h-screen bg-gradient-to-r from-blue-50 via-gray-50 to-blue-100">
-      <div className="bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl w-[400px] border border-gray-200">
+      <div className="bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl w-[420px] border border-gray-200">
         
         {/* Railway Logo */}
         <div className="flex justify-center mb-6">
@@ -105,7 +98,22 @@ export default function Login({ setIsLoggedIn }) {
           Indian Railway Login
         </h2>
 
-        {step === "email" && (
+        {/* Role Selector */}
+        <select
+          value={role}
+          onChange={(e) => {
+            setRole(e.target.value);
+            setStep("email"); // reset to email step
+          }}
+          className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-400 focus:outline-none mb-6"
+        >
+          <option value="">-- Select Role --</option>
+          <option value="Supervisor">Supervisor</option>
+          <option value="Controller">Controller</option>
+        </select>
+
+        {/* Supervisor Flow */}
+        {role === "Supervisor" && step === "email" && (
           <>
             <input
               type="email"
@@ -145,7 +153,8 @@ export default function Login({ setIsLoggedIn }) {
           </>
         )}
 
-        {step === "otp" && (
+        {/* Supervisor OTP Step */}
+        {role === "Supervisor" && step === "otp" && (
           <>
             <input
               type="text"
@@ -163,8 +172,14 @@ export default function Login({ setIsLoggedIn }) {
             </button>
           </>
         )}
+
+        {/* Controller Flow (placeholder for now) */}
+        {role === "Controller" && (
+          <div className="text-center text-gray-600 mt-6">
+            <p>Controller login coming soon...</p>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
