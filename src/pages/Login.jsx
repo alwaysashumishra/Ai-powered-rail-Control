@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/2.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 export default function Login() {
   const [role, setRole] = useState("");
@@ -14,12 +15,9 @@ export default function Login() {
   const [showForgot, setShowForgot] = useState(false); // 👈 new modal state
   const [resetEmail, setResetEmail] = useState("");
 
+    const navigate = useNavigate();
   const handleLogin = () => {
-    if (role && userId && password && captchaInput === captcha) {
-      alert(`Welcome ${role} 🚆`);
-    } else {
-      alert("Please fill all fields correctly ❌");
-    }
+    {role && userId && password && captchaInput === captcha? navigate("/collect"):"Invalid Captcha"}
   };
 
   const regenerateCaptcha = () => {
@@ -38,7 +36,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-[#1d3557] via-[#222] to-[#1d3557] relative">
+    <div className="min-h-screen py-10 flex flex-col md:flex-row bg-gradient-to-br from-[#1d3557] via-[#222] to-[#1d3557] relative">
       {/* Left Panel */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start p-8 md:pl-16 text-white">
         <img src={logo} alt="Indian Railways" className="w-72 h-28 object-contain mb-6" />
