@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/2.png"; 
-import { Link, Route, Routes } from "react-router-dom";
 import NeedHelp from "../components/NeedHelp";
-
-// apna logo path daalna
+ // 👈 Import component
 
 export default function Login() {
   const [role, setRole] = useState("");
@@ -13,11 +11,12 @@ export default function Login() {
   const [captcha, setCaptcha] = useState(() =>
     Math.random().toString(36).substring(2, 8).toUpperCase()
   );
+  const [showHelp, setShowHelp] = useState(false); // 👈 modal state
 
   const handleLogin = () => {
     if (role && userId && password && captchaInput === captcha) {
       alert(`Welcome ${role} 🚆`);
-      setIsLoggedIn(true);
+      // setIsLoggedIn(true); // login logic handle karo yaha
     } else {
       alert("Please fill all fields correctly ❌");
     }
@@ -29,7 +28,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-[#1d3557] via-[#222] to-[#1d3557]">
+    <div className="min-h-screen flex flex-col md:flex-row bg-gradient-to-br from-[#1d3557] via-[#222] to-[#1d3557] relative">
       {/* Left Panel */}
       <div className="w-full md:w-1/2 flex flex-col justify-center items-center md:items-start p-8 md:pl-16 text-white">
         <img
@@ -46,8 +45,8 @@ export default function Login() {
       </div>
 
       {/* Login Portal (Right Side Card) */}
-      <div className="w-full md:w-1/2 flex justify-center items-center p-6">
-        <div className="bg-[#1e293b] shadow-2xl rounded-2xl w-full max-w-md p-8">
+      <div className="w-full md:w-1/2 flex justify-center items-center p-6 relative">
+        <div className="bg-[#1e293b] shadow-2xl rounded-2xl w-full max-w-md p-8 relative z-10">
           {/* Title */}
           <h2 className="text-2xl font-bold text-center mb-6 text-white">
             iRAIL-Control Login Portal
@@ -115,16 +114,52 @@ export default function Login() {
 
           {/* Extra Links */}
           <div className="mt-6 text-center text-sm text-gray-300 space-y-2">
-            
-              
-             <Link to ="/need-help" className="hover:underline cursor-pointer text-blue-500"> Need Help for Login?</Link>
-            
+            <p
+              className="hover:underline cursor-pointer text-blue-500"
+              onClick={() => setShowHelp(true)}
+            >
+              Need Help for Login?
+            </p>
             <p className="hover:underline cursor-pointer">Forgot Password?</p>
             <p className="text-red-400 hover:underline cursor-pointer">
               📢 Notices
             </p>
           </div>
         </div>
+
+        {/* ---------------- Need Help Modal ---------------- */}
+        {/* ---------------- Need Help Modal ---------------- */}
+{showHelp && (
+  <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+    <div className="bg-[#1e293b] rounded-2xl p-6 max-w-md w-full relative shadow-2xl">
+      {/* Close Button */}
+      <button
+        className="absolute top-3 right-4 text-white font-bold text-2xl"
+        onClick={() => setShowHelp(false)}
+      >
+        ×
+      </button>
+
+      {/* NeedHelp Content */}
+      <h2 className="text-xl font-bold text-white text-center mb-4">
+        Need Help with Login?
+      </h2>
+      <p className="text-gray-300 text-center mb-4">
+        If you are facing issues while logging in, please contact our support team:
+      </p>
+      <a
+        href="mailto:info@irailcontrol.com?subject=Login%20Issue&body=Please%20describe%20your%20issue.%20Attach%20a%20screenshot."
+        className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg"
+      >
+        info@irailcontrol.com
+      </a>
+      <p className="text-sm text-gray-400 text-center mt-2">
+        ⚠️ Don’t forget to attach a screenshot of the error.
+      </p>
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );
